@@ -1,0 +1,6 @@
+--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\HAL\Inc -I..\HAL\Drivers\CMSIS\Include -I..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy -I..\Source --C99
+-I C:\Users\lin\Desktop\新建文件夹\CBT6\project\RTE
+-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include
+-I E:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\1.3.0\Device\Include
+-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F302xC -DUSE_HAL_DRIVER -DSTM32F302xC
+-o cbt6\dalay_user.o --omf_browse cbt6\dalay_user.crf --depend cbt6\dalay_user.d "..\Source\dalay_user.c"
