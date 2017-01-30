@@ -45,7 +45,6 @@
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc2;
 DMA_HandleTypeDef hdma_adc1;
-DMA_HandleTypeDef hdma_adc2;
 
 /* ADC1 init function */
 void MX_ADC1_Init(void)
@@ -58,13 +57,13 @@ void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
   hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T1_CC1;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 2;
+  hadc1.Init.NbrOfConversion = 1;
   hadc1.Init.DMAContinuousRequests = ENABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
@@ -95,15 +94,6 @@ void MX_ADC1_Init(void)
     Error_Handler();
   }
 
-    /**Configure Regular Channel 
-    */
-  sConfig.Channel = ADC_CHANNEL_3;
-  sConfig.Rank = 2;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
 }
 /* ADC2 init function */
 void MX_ADC2_Init(void)
@@ -120,7 +110,7 @@ void MX_ADC2_Init(void)
   hadc2.Init.DiscontinuousConvMode = DISABLE;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc2.Init.NbrOfConversion = 1;
-  hadc2.Init.DMAContinuousRequests = ENABLE;
+  hadc2.Init.DMAContinuousRequests = DISABLE;
   hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc2.Init.LowPowerAutoWait = DISABLE;
   hadc2.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
@@ -131,21 +121,12 @@ void MX_ADC2_Init(void)
 
     /**Configure Regular Channel 
     */
-  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Channel = ADC_CHANNEL_4;
   sConfig.Rank = 1;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
-  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-    /**Configure Regular Channel 
-    */
-  sConfig.Channel = ADC_CHANNEL_4;
-  sConfig.Rank = 2;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -172,11 +153,9 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
   
     /**ADC1 GPIO Configuration    
     PA0     ------> ADC1_IN1
-    PA1     ------> ADC1_IN2
-    PA2     ------> ADC1_IN3
-    PA3     ------> ADC1_IN4 
+    PA1     ------> ADC1_IN2 
     */
-    GPIO_InitStruct.Pin = VIDEO_P_Pin|VIDEO_N_Pin|ANA_TEST_2_Pin|ANA_TEST_1_Pin;
+    GPIO_InitStruct.Pin = VIDEO_P_Pin|VIDEO_N_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -214,32 +193,12 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     }
   
     /**ADC2 GPIO Configuration    
-    PA4     ------> ADC2_IN1
     PA7     ------> ADC2_IN4 
     */
-    GPIO_InitStruct.Pin = P3V3_ADC_IN_Pin|LASER_CURRENT_MON_Pin;
+    GPIO_InitStruct.Pin = GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    /* Peripheral DMA init*/
-  
-    hdma_adc2.Instance = DMA2_Channel3;
-    hdma_adc2.Init.Direction = DMA_PERIPH_TO_MEMORY;
-    hdma_adc2.Init.PeriphInc = DMA_PINC_DISABLE;
-    hdma_adc2.Init.MemInc = DMA_MINC_ENABLE;
-    hdma_adc2.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-    hdma_adc2.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-    hdma_adc2.Init.Mode = DMA_NORMAL;
-    hdma_adc2.Init.Priority = DMA_PRIORITY_LOW;
-    if (HAL_DMA_Init(&hdma_adc2) != HAL_OK)
-    {
-      Error_Handler();
-    }
-
-    __HAL_DMA_REMAP_CHANNEL_ENABLE(HAL_REMAPDMA_ADC24_DMA2_CH34);
-
-    __HAL_LINKDMA(adcHandle,DMA_Handle,hdma_adc2);
 
   /* USER CODE BEGIN ADC2_MspInit 1 */
 
@@ -263,11 +222,9 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
   
     /**ADC1 GPIO Configuration    
     PA0     ------> ADC1_IN1
-    PA1     ------> ADC1_IN2
-    PA2     ------> ADC1_IN3
-    PA3     ------> ADC1_IN4 
+    PA1     ------> ADC1_IN2 
     */
-    HAL_GPIO_DeInit(GPIOA, VIDEO_P_Pin|VIDEO_N_Pin|ANA_TEST_2_Pin|ANA_TEST_1_Pin);
+    HAL_GPIO_DeInit(GPIOA, VIDEO_P_Pin|VIDEO_N_Pin);
 
     /* Peripheral DMA DeInit*/
     HAL_DMA_DeInit(adcHandle->DMA_Handle);
@@ -287,13 +244,10 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     }
   
     /**ADC2 GPIO Configuration    
-    PA4     ------> ADC2_IN1
     PA7     ------> ADC2_IN4 
     */
-    HAL_GPIO_DeInit(GPIOA, P3V3_ADC_IN_Pin|LASER_CURRENT_MON_Pin);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_7);
 
-    /* Peripheral DMA DeInit*/
-    HAL_DMA_DeInit(adcHandle->DMA_Handle);
   /* USER CODE BEGIN ADC2_MspDeInit 1 */
 
   /* USER CODE END ADC2_MspDeInit 1 */
