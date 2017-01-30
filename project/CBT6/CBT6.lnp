@@ -33,6 +33,11 @@
 "cbt6\laser.o"
 "cbt6\delay_user.o"
 "cbt6\usart_user.o"
+"cbt6\rec.o"
+"cbt6\transmit.o"
+"cbt6\sysconfig.o"
+"cbt6\angle_and_speed.o"
+"cbt6\epc.o"
 --library_type=microlib --strict --scatter "CBT6\CBT6.sct"
 
 --diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols

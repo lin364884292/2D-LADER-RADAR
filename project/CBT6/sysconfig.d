@@ -1,5 +1,10 @@
 cbt6\sysconfig.o: ..\USER\sysconfig.c
 cbt6\sysconfig.o: ..\USER\sysconfig.h
+cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal.h
+cbt6\sysconfig.o: ..\HAL\Inc\stm32f3xx_hal_conf.h
+cbt6\sysconfig.o: ..\HAL\Inc\main.h
+cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_rcc.h
+cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_def.h
 cbt6\sysconfig.o: ..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include\stm32f3xx.h
 cbt6\sysconfig.o: ..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include\stm32f302xc.h
 cbt6\sysconfig.o: ..\HAL\Drivers\CMSIS\Include\core_cm4.h
@@ -10,11 +15,6 @@ cbt6\sysconfig.o: ..\HAL\Drivers\CMSIS\Include\core_cmFunc.h
 cbt6\sysconfig.o: ..\HAL\Drivers\CMSIS\Include\core_cmSimd.h
 cbt6\sysconfig.o: ..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include\system_stm32f3xx.h
 cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal.h
-cbt6\sysconfig.o: ..\HAL\Inc\stm32f3xx_hal_conf.h
-cbt6\sysconfig.o: ..\HAL\Inc\main.h
-cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_rcc.h
-cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_def.h
-cbt6\sysconfig.o: ..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include\stm32f3xx.h
 cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy/stm32_hal_legacy.h
 cbt6\sysconfig.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 cbt6\sysconfig.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_rcc_ex.h

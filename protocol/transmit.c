@@ -18,7 +18,7 @@
   * @note   需要确保输入的数据信息正确，特别是out buffer最好要是待打包数据长度的两倍
   * @retval None
   */
-ResultTypeDef Package(PackageDataStruct package , u16 error_code)
+ResultTypeDef Package(PackageDataStruct package)
 {
 	u32 j = 0;
 	u32 i = 0;
@@ -31,7 +31,7 @@ ResultTypeDef Package(PackageDataStruct package , u16 error_code)
 	
 	sdk_header.DeviceAddr = LIDAR_ADDRESS;
 	sdk_header.FunctionCode = package.DataID;
-	sdk_header.ErrorCode = error_code;
+	sdk_header.StartAddr = 0;
 	sdk_header.Len = package.DataInLen;
 
 	*(package.DataOutBuff+i ++) = P_HEADER;
@@ -70,3 +70,6 @@ ResultTypeDef Package(PackageDataStruct package , u16 error_code)
 	
 	return PACK_OK;
 }
+
+  
+/************************ (C) COPYRIGHT INMOTION ROBOT *****END OF FILE****/

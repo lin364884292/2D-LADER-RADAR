@@ -228,7 +228,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
   /* USER CODE BEGIN ADC1_MspDeInit 1 */
 
   /* USER CODE END ADC1_MspDeInit 1 */
-  }
+  
   else if(adcHandle->Instance==ADC2)
   {
   /* USER CODE BEGIN ADC2_MspDeInit 0 */
@@ -236,7 +236,8 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
   /* USER CODE END ADC2_MspDeInit 0 */
     /* Peripheral clock disable */
     HAL_RCC_ADC12_CLK_ENABLED--;
-    if(HAL_RCC_ADC12_CLK_ENABLED==0){
+    if(HAL_RCC_ADC12_CLK_ENABLED==0)
+    {
       __HAL_RCC_ADC12_CLK_DISABLE();
     }
   
@@ -248,7 +249,8 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
   /* USER CODE BEGIN ADC2_MspDeInit 1 */
 
   /* USER CODE END ADC2_MspDeInit 1 */
-  }
+    }
+
 } 
 
 /* USER CODE BEGIN 1 */

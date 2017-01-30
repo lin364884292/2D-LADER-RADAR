@@ -1,12 +1,10 @@
 /**
   * @file        angle_and_speed.c
-  * @author      陈维
+  * @author      林佳伟
   * @version     V01
-  * @date        2016.05.16
+  * @date        2017.1.30
   * @brief       测电机转速及计算当前角度
   * @note
-  *
-  * @attention   COYPRIGHT INMOTION ROBOT
   */
 #include "angle_and_speed.h"
 #include "transmit.h"

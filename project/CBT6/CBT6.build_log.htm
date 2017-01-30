@@ -22,145 +22,14 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 C:\Users\lin\Desktop\自己写的驱动\CBT6\project\2D-LASER.uvprojx
-Project File Date:  01/07/2017
+Project File Date:  01/29/2017
 
 <h2>Output:</h2>
 Build target '2D-LASER'
-compiling system_stm32f3xx.c...
 compiling adc.c...
-compiling dma.c...
-compiling gpio.c...
-compiling i2c.c...
-compiling main.c...
-compiling stm32f3xx_hal_msp.c...
-compiling stm32f3xx_it.c...
-compiling tim.c...
-compiling usart.c...
-compiling stm32f3xx_hal_uart.c...
-compiling stm32f3xx_hal.c...
-compiling stm32f3xx_hal_adc.c...
-compiling stm32f3xx_hal_adc_ex.c...
-compiling stm32f3xx_hal_cortex.c...
-compiling stm32f3xx_hal_dma.c...
-compiling stm32f3xx_hal_flash.c...
-compiling stm32f3xx_hal_flash_ex.c...
-compiling stm32f3xx_hal_gpio.c...
-compiling stm32f3xx_hal_i2c.c...
-compiling stm32f3xx_hal_i2c_ex.c...
-compiling stm32f3xx_hal_pwr.c...
-compiling stm32f3xx_hal_pwr_ex.c...
-compiling stm32f3xx_hal_rcc.c...
-compiling stm32f3xx_hal_rcc_ex.c...
-compiling stm32f3xx_hal_tim.c...
-compiling stm32f3xx_hal_tim_ex.c...
-compiling stm32f3xx_hal_uart_ex.c...
-compiling adc_user.c...
-compiling gpio_user.c...
-compiling laser.c...
-compiling delay_user.c...
-compiling usart_user.c...
-..\Source\usart_user.c(83): warning:  #550-D: variable "data_counter" was set but never used
-      u16 data_counter = 0;
-..\Source\usart_user.c(17): warning:  #177-D: function "UART_DMATransmitCplt" was declared but never referenced
-  static void UART_DMATransmitCplt(DMA_HandleTypeDef *hdma);
-..\Source\usart_user.c: 2 warnings, 0 errors
-compiling rec.c...
-compiling transmit.c...
-compiling sysconfig.c...
-..\USER\sysconfig.c(46): warning:  #223-D: function "FLASH_DataCacheCmd" declared implicitly
-      FLASH_DataCacheCmd(DISABLE);
-..\USER\sysconfig.c(52): warning:  #174-D: expression has no effect
-      HAL_FLASHEx_OBErase;
-..\USER\sysconfig.c(59): warning:  #223-D: function "FLASH_ProgramWord" declared implicitly
-                FLASH_ProgramWord(CONFIG_BASE_ADDRESS + i,*ptr);
-..\USER\sysconfig.c(65): error:  #20: identifier "flash_status" is undefined
-      flash_status = flash_status;
-..\USER\sysconfig.c(107): warning:  #223-D: function "DMA_ITConfig" declared implicitly
-      DMA_ITConfig(DMA2_Stream1, DMA_IT_TC, DISABLE);   
-..\USER\sysconfig.c(107): error:  #20: identifier "DMA2_Stream1" is undefined
-      DMA_ITConfig(DMA2_Stream1, DMA_IT_TC, DISABLE);   
-..\USER\sysconfig.c(108): warning:  #223-D: function "TIM_ITConfig" declared implicitly
-      TIM_ITConfig(TIM14, TIM_IT_Update, DISABLE);
-..\USER\sysconfig.c(108): error:  #20: identifier "TIM14" is undefined
-      TIM_ITConfig(TIM14, TIM_IT_Update, DISABLE);
-..\USER\sysconfig.c(108): error:  #20: identifier "TIM_IT_Update" is undefined
-      TIM_ITConfig(TIM14, TIM_IT_Update, DISABLE);
-..\USER\sysconfig.c(109): warning:  #223-D: function "USART_ITConfig" declared implicitly
-      USART_ITConfig(USART1, USART_IT_IDLE, DISABLE);
-..\USER\sysconfig.c(109): error:  #20: identifier "USART_IT_IDLE" is undefined
-      USART_ITConfig(USART1, USART_IT_IDLE, DISABLE);
-..\USER\sysconfig.c(110): error:  #20: identifier "DMA2_Stream7" is undefined
-      DMA_ITConfig(DMA2_Stream7, DMA_IT_TC, DISABLE);
-..\USER\sysconfig.c(111): error:  #20: identifier "DMA2_Stream5" is undefined
-      DMA_ITConfig(DMA2_Stream5, DMA_IT_TC, DISABLE);
-..\USER\sysconfig.c(122): warning:  #223-D: function "DMA_ITConfig" declared implicitly
-      DMA_ITConfig(DMA2_Stream1, DMA_IT_TC, ENABLE);    
-..\USER\sysconfig.c(122): error:  #20: identifier "DMA2_Stream1" is undefined
-      DMA_ITConfig(DMA2_Stream1, DMA_IT_TC, ENABLE);    
-..\USER\sysconfig.c(123): warning:  #223-D: function "TIM_ITConfig" declared implicitly
-      TIM_ITConfig(TIM14, TIM_IT_Update, ENABLE);
-..\USER\sysconfig.c(123): error:  #20: identifier "TIM14" is undefined
-      TIM_ITConfig(TIM14, TIM_IT_Update, ENABLE);
-..\USER\sysconfig.c(123): error:  #20: identifier "TIM_IT_Update" is undefined
-      TIM_ITConfig(TIM14, TIM_IT_Update, ENABLE);
-..\USER\sysconfig.c(124): warning:  #223-D: function "USART_ITConfig" declared implicitly
-      USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);
-..\USER\sysconfig.c(124): error:  #20: identifier "USART_IT_IDLE" is undefined
-      USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);
-..\USER\sysconfig.c(125): error:  #20: identifier "DMA2_Stream7" is undefined
-      DMA_ITConfig(DMA2_Stream7, DMA_IT_TC, ENABLE);
-..\USER\sysconfig.c(126): error:  #20: identifier "DMA2_Stream5" is undefined
-      DMA_ITConfig(DMA2_Stream5, DMA_IT_TC, ENABLE);
-..\USER\sysconfig.c: 9 warnings, 13 errors
-compiling angle_and_speed.c...
-..\Bsp\angle_and_speed\angle_and_speed.h(35): error:  #20: identifier "BOOL" is undefined
-  BOOL IsZeroPoint(void);
-..\Bsp\angle_and_speed\angle_and_speed.h(38): error:  #20: identifier "BOOL" is undefined
-  BOOL IsAllPulseWidthDataReady(void);
-..\Bsp\angle_and_speed\angle_and_speed.h(39): error:  #20: identifier "BOOL" is undefined
-  BOOL IsLidarStall(void);
-..\Bsp\angle_and_speed\angle_and_speed.h(40): error:  #20: identifier "BOOL" is undefined
-  BOOL IsTimeToSendSpeed(void);
-..\Bsp\angle_and_speed\angle_and_speed.c(16): error:  #20: identifier "BOOL" is undefined
-  static BOOL LidarStall = TRUE;  //Lidar鍋滆浆鏍囧織
-..\Bsp\angle_and_speed\angle_and_speed.c(16): error:  #20: identifier "TRUE" is undefined
-  static BOOL LidarStall = TRUE;  //Lidar鍋滆浆鏍囧織
-..\Bsp\angle_and_speed\angle_and_speed.c(25): error:  #20: identifier "BOOL" is undefined
-  static BOOL PulseWidthDataReady = FALSE;
-..\Bsp\angle_and_speed\angle_and_speed.c(25): error:  #20: identifier "FALSE" is undefined
-  static BOOL PulseWidthDataReady = FALSE;
-..\Bsp\angle_and_speed\angle_and_speed.c(40): error:  #20: identifier "htim6" is undefined
-      HAL_TIM_Base_Start(&htim6);   
-..\Bsp\angle_and_speed\angle_and_speed.c(63): error:  #20: identifier "htim6" is undefined
-                  TimePerCircle = htim6.Instance->CNT;
-..\Bsp\angle_and_speed\angle_and_speed.c(105): error:  #20: identifier "htim6" is undefined
-                                ElapsedTimeRecord[GratingIndex] = htim6.Instance->CNT;  
-..\Bsp\angle_and_speed\angle_and_speed.c(140): error:  #20: identifier "BOOL" is undefined
-  BOOL IsAllPulseWidthDataReady(void)
-..\Bsp\angle_and_speed\angle_and_speed.c(202): error:  #20: identifier "BOOL" is undefined
-  BOOL IsZeroPoint(void)
-..\Bsp\angle_and_speed\angle_and_speed.c(254): error:  #20: identifier "BOOL" is undefined
-  BOOL IsLidarStall(void)
-..\Bsp\angle_and_speed\angle_and_speed.c(272): error:  #20: identifier "BOOL" is undefined
-  BOOL IsTimeToSendSpeed(void)
-..\Bsp\angle_and_speed\angle_and_speed.c(310): error:  #165: too few arguments in function call
-      Package(package);
-..\Bsp\angle_and_speed\angle_and_speed.c(291): warning:  #177-D: variable "i" was declared but never referenced
-      u8 i = 0;
-..\Bsp\angle_and_speed\angle_and_speed.c: 1 warning, 16 errors
-compiling epc.c...
-..\Bsp\ccd\epc.c(59): error:  #20: identifier "htim2" is undefined
-      HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_4); // start SHUTTER
-..\Bsp\ccd\epc.c(71): error:  #20: identifier "htim1" is undefined
-      HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1); //READ
-..\Bsp\ccd\epc.c(131): error:  #20: identifier "htim1" is undefined
-          HAL_TIM_PWM_Stop(&htim1,TIM_CHANNEL_1);
-..\Bsp\ccd\epc.c(142): error:  #20: identifier "htim2" is undefined
-      if(htim == &htim2)
-..\Bsp\ccd\epc.c(157): warning:  #1-D: last line of file ends without a newline
-  }
-..\Bsp\ccd\epc.c: 1 warning, 4 errors
-"CBT6\CBT6.axf" - 33 Error(s), 13 Warning(s).
+linking...
+Program Size: Code=29136 RO-data=3648 RW-data=36 ZI-data=2220  
+"CBT6\CBT6.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -179,7 +48,6 @@ Package Vendor: ARM
 
    * Component: ARM::CMSIS:CORE:3.40.0
       Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
-Target not created.
 </pre>
 </body>
 </html>

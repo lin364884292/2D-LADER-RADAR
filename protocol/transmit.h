@@ -13,7 +13,7 @@
 #ifndef _TRANSMIT_H_
 #define _TRANSMIT_H_
 
-ResultTypeDef Package(PackageDataStruct package , u16 error_code);
+ResultTypeDef Package(PackageDataStruct package);
 
 #endif
 
