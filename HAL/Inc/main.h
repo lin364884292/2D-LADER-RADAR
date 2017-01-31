@@ -45,6 +45,38 @@
 #define VIDEO_P_GPIO_Port GPIOA
 #define VIDEO_N_Pin GPIO_PIN_1
 #define VIDEO_N_GPIO_Port GPIOA
+#define ANA_TEXT_2_Pin GPIO_PIN_2
+#define ANA_TEXT_2_GPIO_Port GPIOA
+#define ANA_TEST_1_Pin GPIO_PIN_3
+#define ANA_TEST_1_GPIO_Port GPIOA
+#define PA_LASER1_Pin GPIO_PIN_6
+#define PA_LASER1_GPIO_Port GPIOA
+#define LASER_CURRENT_MONITOR_Pin GPIO_PIN_7
+#define LASER_CURRENT_MONITOR_GPIO_Port GPIOA
+#define BOOT1_Pin GPIO_PIN_2
+#define BOOT1_GPIO_Port GPIOB
+#define SHUTTER_Pin GPIO_PIN_11
+#define SHUTTER_GPIO_Port GPIOB
+#define CLR_PIX_Pin GPIO_PIN_12
+#define CLR_PIX_GPIO_Port GPIOB
+#define DATA_RDY_Pin GPIO_PIN_13
+#define DATA_RDY_GPIO_Port GPIOB
+#define CLR_DATA_Pin GPIO_PIN_14
+#define CLR_DATA_GPIO_Port GPIOB
+#define ANGLE_Pin GPIO_PIN_15
+#define ANGLE_GPIO_Port GPIOB
+#define PWR_DOWN_Pin GPIO_PIN_11
+#define PWR_DOWN_GPIO_Port GPIOA
+#define TEST_MODE_Pin GPIO_PIN_12
+#define TEST_MODE_GPIO_Port GPIOA
+#define LED_Pin GPIO_PIN_15
+#define LED_GPIO_Port GPIOA
+#define RD_DIR_Pin GPIO_PIN_4
+#define RD_DIR_GPIO_Port GPIOB
+#define ROI_SEL_Pin GPIO_PIN_5
+#define ROI_SEL_GPIO_Port GPIOB
+#define READ_Pin GPIO_PIN_8
+#define READ_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
