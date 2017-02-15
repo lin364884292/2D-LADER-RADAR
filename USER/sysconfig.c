@@ -1,6 +1,6 @@
 /**
   * @file        sysconfig.c
-  * @author      陈维
+  * @author      林佳伟
   * @version     V01
   * @date        2016.09.21
   * @brief       

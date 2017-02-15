@@ -22,7 +22,7 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 C:\Users\lin\Desktop\自己写的驱动\CBT6\project\2D-LASER.uvprojx
-Project File Date:  01/29/2017
+Project File Date:  02/13/2017
 
 <h2>Output:</h2>
 Build target '2D-LASER'
@@ -67,6 +67,8 @@ compiling usart_user.c...
 ..\Source\usart_user.c(17): warning:  #177-D: function "UART_DMATransmitCplt" was declared but never referenced
   static void UART_DMATransmitCplt(DMA_HandleTypeDef *hdma);
 ..\Source\usart_user.c: 2 warnings, 0 errors
+compiling rec.c...
+compiling transmit.c...
 compiling sysconfig.c...
 compiling angle_and_speed.c...
 ..\Bsp\angle_and_speed\angle_and_speed.c(289): warning:  #177-D: variable "i" was declared but never referenced
@@ -76,9 +78,33 @@ compiling epc.c...
 ..\Bsp\ccd\epc.c(157): warning:  #1-D: last line of file ends without a newline
   }
 ..\Bsp\ccd\epc.c: 1 warning, 0 errors
+compiling algorithm.c...
+..\algorithm\algorithm.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\algorithm\algorithm.c(24): warning:  #177-D: variable "con_width" was declared but never referenced
+      u16 con_width = 0;
+..\algorithm\algorithm.c(25): warning:  #177-D: variable "con_head" was declared but never referenced
+      u16 con_head = 65535, con_tail = 65535;
+..\algorithm\algorithm.c(25): warning:  #177-D: variable "con_tail" was declared but never referenced
+      u16 con_head = 65535, con_tail = 65535;
+..\algorithm\algorithm.c(26): warning:  #550-D: variable "type" was set but never used
+      u8 type;
+..\algorithm\algorithm.c(30): warning:  #177-D: variable "head" was declared but never referenced
+      PixCurveCoor head = { 0, 0 }, tail = { 0, 0 }, mid = { 0, 0 };
+..\algorithm\algorithm.c(30): warning:  #177-D: variable "tail" was declared but never referenced
+      PixCurveCoor head = { 0, 0 }, tail = { 0, 0 }, mid = { 0, 0 };
+..\algorithm\algorithm.c(30): warning:  #177-D: variable "mid" was declared but never referenced
+      PixCurveCoor head = { 0, 0 }, tail = { 0, 0 }, mid = { 0, 0 };
+..\algorithm\algorithm.c(78): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                *distance = 87466.6/(766.3-index); // f=16mm
+..\algorithm\algorithm.c(264): warning:  #1-D: last line of file ends without a newline
+  }
+..\algorithm\algorithm.c(6): warning:  #550-D: variable "ConDomMax" was set but never used
+  static ConDom ConDomMax;//鏈�澶у�兼墍鍦ㄨ繛閫氬煙
+..\algorithm\algorithm.c: 11 warnings, 0 errors
 linking...
-Program Size: Code=31192 RO-data=1592 RW-data=40 ZI-data=17656  
-"CBT6\CBT6.axf" - 0 Error(s), 5 Warning(s).
+Program Size: Code=31176 RO-data=1608 RW-data=40 ZI-data=17656  
+"CBT6\CBT6.axf" - 0 Error(s), 16 Warning(s).
 
 <h2>Software Packages used:</h2>
 

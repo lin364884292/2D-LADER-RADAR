@@ -1,6 +1,6 @@
 /**
   * @file        epc.c
-  * @author      陈维
+  * @author      林佳伟
   * @version     V01
   * @date        2017.01.11
   * @brief       epc芯片驱动

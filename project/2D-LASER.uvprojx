@@ -365,7 +365,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F302xC</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HAL\Inc;..\HAL\Drivers\CMSIS\Include;..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include;..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc;..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy;..\Source;..\protocol;..\USER;..\Bsp\angle_and_speed;..\Bsp\ccd</IncludePath>
+              <IncludePath>..\HAL\Inc;..\HAL\Drivers\CMSIS\Include;..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include;..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc;..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy;..\Source;..\protocol;..\USER;..\Bsp\angle_and_speed;..\Bsp\ccd;..\algorithm</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -640,6 +640,16 @@
               <FileName>epc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Bsp\ccd\epc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>algorithm</GroupName>
+          <Files>
+            <File>
+              <FileName>algorithm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\algorithm\algorithm.c</FilePath>
             </File>
           </Files>
         </Group>
