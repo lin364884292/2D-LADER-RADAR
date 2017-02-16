@@ -9,145 +9,133 @@
 */
 
 #include "usart_user.h"
+#include "sysconfig.h"
 #include "usart.h"
 #include "stdio.h"
 #include "stm32f3xx_hal_uart.h"
 #include "rec.h"
 
-static void UART_DMATransmitCplt(DMA_HandleTypeDef *hdma);
+extern UART_HandleTypeDef huart1;
+extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 
-//加入以下代码,支持printf函数,而不需要选择use MicroLIB
-#pragma import(__use_no_semihosting)
-
-//标准库需要的支持函数
-struct __FILE
+static void SendWholePixel(void)
 {
-    int handle;
-};
+	u32 out_len = 0;
 
-FILE __stdout;
-
-////定义_sys_exit()以避免使用半主机模式
-//_sys_exit(int x)
-//{
-//    x = x;
-//}
-
-//重定向fputc函数,调试用
-int fputc(int ch, FILE *f)
-{
-    while ((USART1->ISR & 0X40) == 0);
-    USART1->RDR = (u8)ch;
-    return ch;
+	PackageDataStruct package;
+    CCD_DataBuffer[2] = DEBUG_GET_WHOLE_PIXEL_VALUE;
+    
+	package.DataID = PACK_DEBUG_MODE;
+	package.DataInBuff = (u8*)&CCD_DataBuffer[2];
+	package.DataInLen = (PIXEL_1_FPS - 2)*2;
+	package.DataOutBuff = ComBuffer.TxBuffer;
+	package.DataOutLen = &out_len;
+	
+    Package(package);
+    
+    HAL_UART_Transmit(&huart1,ComBuffer.TxBuffer,out_len,10);    
 }
 
+
 /**
-* @brief  串口 DMA 发送接口
-* @param  huart      : 串口句柄
-* @param  pData      : 数据指针
-* @param  Size       : 数据长度
-* @param  tx_tc_flag : 发送完成 flag 偏移
-* @retval None
-*/
-HAL_StatusTypeDef USER_UART_Transmit_DMA(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, u32 tx_tc_flag)
+  * @brief  处理串口发过来的数据包
+	* @note   发过来的数据有两种：
+			1，配置命令: 固定16bit数据
+			2，更新：数据长度不固定
+	* @param  None
+  * @retval None
+  */
+void HandleCmd(void)
 {
-    if(__HAL_DMA_GET_FLAG(huart->hdmatx, tx_tc_flag))
+    if (RecPackage.DataID != PACK_NULL)
     {
-        if(huart->gState == HAL_UART_STATE_BUSY_TX_RX)
+        s16 config_data = *(s16 *)RecPackage.DataOutBuff;
+        
+		switch (RecPackage.DataID)
         {
-            huart->gState = HAL_UART_STATE_BUSY_TX;
+        case PACK_SET_PIXOFFSET:
+            PixOffset = config_data;
+            break;
+
+        case PACK_SET_SPEED:
+            SystemConfig.GivenSpeed = config_data;
+            break;
+
+        case PACK_GET_GYROSCOPE_DATA:
+            
+            break;
+
+        case PACK_FLASH_CONFIG:
+			
+            break;
+		
+        case PACK_FIRMWARE_UPDATE:
+			
+            break;
+		
+		case PACK_ANGLE_OFFSET:
+			SystemConfig.AngleOffset = config_data;
+			break;
+		
+		case PACK_CONTROL_LASER:
+			
+			break;
+			
+		case PACK_SELF_TEST:
+			
+			break;
+		
+		case PACK_DEBUG_MODE:
+           while(1)
+           {               
+             SendWholePixel();
+              while(HAL_UART_GetState(&huart1) == HAL_UART_STATE_BUSY);
+           }
+		    break;
+
+		case PACK_START_ROTATE:
+			
+		    break;		
+		
+		default:
+            break;
         }
-        else
-        {
-            huart->gState = HAL_UART_STATE_READY;
-        }
-        
-        __HAL_UNLOCK(huart->hdmatx);
-        __HAL_DMA_CLEAR_FLAG(huart->hdmatx, tx_tc_flag);
+		
     }
-    return HAL_UART_Transmit_DMA(huart, pData, Size);
+			RecPackage.DataID = PACK_NULL;	
+}
+
+
+void UART_SetDMA(void)
+{
+	if(HAL_UART_Receive_DMA(&huart1,ComBuffer.RxBuffer,DATA_AMOUNT) == HAL_OK)
+	{
+		//UserPrintf("Info:Com1 OK\n");
+	}
+	else
+	{
+		//UserPrintf("Error:Com1 NG\n");
+	}	
+}
+
+void UART_RestartDMA(void)
+{
+	__HAL_DMA_DISABLE(&hdma_usart1_rx);
+	hdma_usart1_rx.Instance->CNDTR = DATA_AMOUNT;
+	__HAL_DMA_ENABLE(&hdma_usart1_rx);
 }
 
 /**
-  * @brief  串口1中断服务程序
-  * @param  None
-  * @retval None
+	* @brief  串口DMA接收完成中断的回调函敿
+	* @note   每次解包完成后会重置DMA，所以只有当串口有错误发生才会触发此回调
+	* @param  None
+	* @retval None
   */
-
-void USART1_IRQHANDLER_USER (UART_HandleTypeDef *huart , DMA_HandleTypeDef *hdma)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    u32 temp;
-    if((__HAL_UART_GET_IT( huart , UART_IT_IDLE)) != RESET) //空闲线路中断
-    {
-    u16 data_counter = 0;
-    //清除IDLE标志位的软件序列：读SR，接着读DR
-    temp = USART1->ISR;
-    temp = USART1->RDR;
-    
-    temp = (__HAL_DMA_GET_COUNTER(hdma));
-    
-    data_counter = RX_LEN - temp;
-    		//0~7
-//    RecPackage.DataID = PACK_NULL;
-//	RecPackage.DataInBuff = ComBuffer.RxBuffer; 
-//	RecPackage.DataInLen = data_counter;
-        
-//  if (Unpacking(&RecPackage) == PACK_OK)
-//		{
-//			DMA_Cmd(DMA2_Stream5, DISABLE);
-//			DMA_ClearFlag(DMA2_Stream5, DMA_FLAG_TCIF5);
-//			DMA_SetCurrDataCounter(DMA2_Stream5, RX_LEN);
-//			DMA_Cmd(DMA2_Stream5, ENABLE);
-//		}  
-    }
-    
-    if(__HAL_UART_GET_IT( huart , UART_IT_IDLE) != RESET)
-    {
-        temp = USART1->RDR; 
-        USART1->RDR = temp;
-    }
-}
-
-/** 
-  * @brief  串口1 DMA发送中断服务程序     TX
-  * @note   单次传输模式，每次传送完成后，需要软件清除TCIF标志位
-  * @param  None
-  * @retval None
-  * 此段函数似乎并没有任何作用，cube生成的时候似乎已经有进行清除标志位
-  */
-void DMA2_Stream7_IRQHandler( DMA_HandleTypeDef *hdma , UART_HandleTypeDef *huart )
-{
-//    if (DMA_GetFlagStatus(DMA2_Stream7, DMA_FLAG_TCIF7) == SET)
-//    {
-//        DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7);
-//    }
-    if(__HAL_DMA_GET_FLAG(hdma, __HAL_DMA_GET_TE_FLAG_INDEX(hdma)) != RESET)    /* Set the UART DMA transfer complete callback */
-    {
-        __HAL_DMA_CLEAR_FLAG(huart->hdmatx , DMA_FLAG_TC4);
-    }
-    
-}
-
-/**
-  * @brief  串口1 DMA接收中断服务程序   RX  
-  * @note   在Idle中有将DMA的计数器清零，所以这个中断发生，说明UART发过来的数据有误
-  * @param  None
-  * @retval None
-  */
-void DMA2_Stream5_IRQHandler(DMA_HandleTypeDef *hdma, UART_HandleTypeDef *huart )
-{
-     if(__HAL_DMA_GET_FLAG(hdma, __HAL_DMA_GET_TE_FLAG_INDEX(hdma)) != RESET)
-    {
-        __HAL_DMA_CLEAR_FLAG(huart->hdmarx , DMA_FLAG_TC5);
-        
-        HAL_DMA_Abort( hdma );
-        
-//        __HAL_DMA_DISABLE ( hdma );
-//        hdma->Instance->CNDTR = 0;
-//        __HAL_DMA_ENABLE ( hdma );
-                
-    }
+	printf("Error:Com1 overflow,please check serial port\n");
+	UART_RestartDMA();
 }
 
 

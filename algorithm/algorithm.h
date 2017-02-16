@@ -2,7 +2,6 @@
 #ifndef _RANGING_H_
 #define _RANGING_H_
 
-
 #include "sysconfig.h"
 
 #define _PRINTF_ENABLE 0 //调试用 0--不使用printf调试(重定向到usart)，1--使用print调试

@@ -7,11 +7,10 @@
 * @attention Copyright (C) 2016 Inmotion Corporation
 ******************************************************************************
 */
-
-#include "pro.h"
-
 #ifndef _TRANSMIT_H_
 #define _TRANSMIT_H_
+
+#include "pro.h"
 
 ResultTypeDef Package(PackageDataStruct package);
 

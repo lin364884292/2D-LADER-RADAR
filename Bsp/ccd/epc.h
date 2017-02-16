@@ -11,6 +11,7 @@
 
 #ifndef _EPC_H_
 #define _EPC_H_
+
 #include "stm32f3xx_hal.h"
 
 typedef struct

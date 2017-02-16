@@ -38,5 +38,6 @@ cbt6\usart_user.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart.h
 cbt6\usart_user.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart_ex.h
 cbt6\usart_user.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 cbt6\usart_user.o: ..\HAL\Inc\usart.h
-cbt6\usart_user.o: ..\protocol\rec.h
+cbt6\usart_user.o: ..\USER\sysconfig.h
 cbt6\usart_user.o: ..\protocol\pro.h
+cbt6\usart_user.o: ..\protocol\rec.h

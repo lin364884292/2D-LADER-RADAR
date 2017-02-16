@@ -41,6 +41,13 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
+#include "usart_user.h"
+#include "sysconfig.h"
+#include "angle_and_speed.h"
+#include "epc.h"
+#include "transmit.h"  
+#include "stdint.h"  
+#include "algorithm.h"
 
 /* USER CODE END Includes */
 
