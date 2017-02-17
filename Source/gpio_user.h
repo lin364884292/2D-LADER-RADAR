@@ -15,4 +15,6 @@
 #include "stm32_lib.h"
 #include "gpio.h"
 
+void LedToggle(void);
+    
 #endif

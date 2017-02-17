@@ -24,11 +24,11 @@ void ADC_Init(ADC_HandleTypeDef* hadc)
         HAL_ADCEx_Calibration_Start(hadc,ADC_DIFFERENTIAL_ENDED);
         HAL_ADC_Start_DMA(hadc, (u32*)ADC1_Buffer, RANK_ADC1_NUMBER);
     }
-    if(hadc == &hadc2)
-    {
-        HAL_ADCEx_Calibration_Start(hadc,ADC_SINGLE_ENDED);
-        HAL_ADC_Start_DMA(hadc, (u32*)ADC2_Buffer, RANK_ADC2_NUMBER);
-    }    
+//    if(hadc == &hadc2)
+//    {
+//        HAL_ADCEx_Calibration_Start(hadc,ADC_SINGLE_ENDED);
+//        HAL_ADC_Start_DMA(hadc, (u32*)ADC2_Buffer, RANK_ADC2_NUMBER);
+//    }    
 }
 
 /**

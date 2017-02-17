@@ -48,6 +48,10 @@
 #include "transmit.h"  
 #include "stdint.h"  
 #include "algorithm.h"
+#include "gpio_user.h"
+
+uint16_t LastAngle = 0;
+static uint16_t Buffer[PIXEL_1_FPS];
 
 /* USER CODE END Includes */
 
@@ -68,6 +72,107 @@ void Error_Handler(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+/**
+  * @brief  将Lidar 2D数据按鿚讯协议打�?
+  * @param  None
+  * @retval None
+  */
+static void PackageAndSendTxData(void)
+{   
+	u32 out_len = 0;
+
+	PackageDataStruct package;
+
+    //目标速度
+    LidarData.GivenSpeed = SystemConfig.GivenSpeed;
+    //当前速度
+    LidarData.CurrSpeed = GetAngularSpeed();
+    
+	package.DataID = PACK_LIDAR_DATA;
+	package.DataInBuff = (u8*)&LidarData;
+	package.DataInLen = sizeof(LidarDataTypeDef);
+	package.DataOutBuff = ComBuffer.TxBuffer;
+	package.DataOutLen = &out_len;
+	
+    Package(package);
+    
+    HAL_UART_Transmit_DMA(&huart1,ComBuffer.TxBuffer,out_len);
+
+}
+
+static void SendMaxPixel(void)
+{
+	u32 out_len = 0;
+    u16 max;
+	PackageDataStruct package;
+    
+    max = GetPixVmax().PixV;
+    CCD_DataBuffer[3] = DEBUG_GET_MAX_PIXEL_VALUE;
+    
+	package.DataID = PACK_DEBUG_MODE;
+	package.DataInBuff = (u8*)&max;
+	package.DataInLen = sizeof(max);
+	package.DataOutBuff = ComBuffer.TxBuffer;
+	package.DataOutLen = &out_len;
+	
+    Package(package);
+    
+    HAL_UART_Transmit(&huart1,ComBuffer.TxBuffer,out_len,10);    
+}
+
+/**
+  * @brief  整合Lidar�?2D数据
+  * @param  angle: Lidar当前的角�?
+  * @retval None
+  */
+static void Intergrate2DData(u16 angle)
+{
+    float distance = 0;
+    float pix_index = 0;
+    u16 confidence;
+	
+    //灰度质心法求得像素质心位�?
+    GetCentroid(Buffer, &pix_index);
+
+    //调整像素偏移�?(校准得来)
+    pix_index += PixOffset;
+		
+	//温度补偿
+	//pix_index += TemperatureCompensation();
+	
+    //估算出距�?
+    GetDistance(pix_index, &distance);
+
+    //大于�?大距离的置零
+//    if ((u16)distance > MAX_DISTANCE)
+//        distance = 0;
+
+    //将距离数据存入测距数组，同时旋转角度，使零度对齐机器人正前方
+    //旋转角度的原因是，光电对管和镜头方向有角度偏�?
+    angle = (angle + SystemConfig.AngleOffset) % 360;
+	
+    confidence = GetPixVmax().PixV;
+    LidarData.PointData[angle].Distance = distance; //(u16)(angle*10);
+	
+    //处理置信度数�?(置信度为像素峰�??,大于255的部分，�?255处理)
+    
+    confidence = confidence>>8; 
+    if (confidence > 255)
+        confidence = 255;
+	
+    LidarData.PointData[angle].Confidence = (u8)confidence;
+}
+
+
+static void ResetLidarData(void)
+{
+    u16 i;
+    for (i = 0; i < 360; i++)
+    {
+		LidarData.PointData[i].Confidence=0;
+		LidarData.PointData[i].Distance=0;
+    }
+}
 
 /* USER CODE END 0 */
 
@@ -75,7 +180,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+   uint8_t id = 0x00;
+   uint16_t current_angle = 0;
+    
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -90,7 +197,6 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_ADC1_Init();
-  MX_ADC2_Init();
   MX_I2C1_Init();
   MX_USART1_UART_Init();
   MX_TIM15_Init();
@@ -102,6 +208,47 @@ int main(void)
   MX_TIM16_Init();
 
   /* USER CODE BEGIN 2 */
+    UART_SetDMA();   
+    InitSystemConfig();  
+    
+    //HAL_TIM_Base_Start_IT(&htim2);
+   /* Run the ADC calibration in differential mode */      
+//    HAL_ADC_Stop(&hadc1);  
+  if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_DIFFERENTIAL_ENDED) != HAL_OK)
+  {
+    /* Start Conversation Error */
+    Error_Handler();
+  }
+
+  //启动各部分引脚功�?
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
+    InitSpeedCapture(); 
+    HAL_GPIO_WritePin(PWR_DOWN_GPIO_Port,PWR_DOWN_Pin,GPIO_PIN_SET);
+    HAL_Delay(1);
+    HAL_GPIO_WritePin(PWR_DOWN_GPIO_Port,PWR_DOWN_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(TEST_MODE_GPIO_Port,TEST_MODE_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(RD_DIR_GPIO_Port,RD_DIR_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(ROI_SEL_GPIO_Port,ROI_SEL_Pin,GPIO_PIN_RESET);  
+    
+    ClearPix();
+    ClearData();
+    StartCCDCapture();
+    PackageAndSendTxData();
+  //通过I2C配置epc的配�?
+//  
+//  if(HAL_I2C_Master_Transmit(&hi2c1,0x20,&id,1,1000) != HAL_OK)
+//  {
+//      printf("i2c t error\n");
+//  }
+//  HAL_Delay(100);
+
+//  
+//  if(HAL_I2C_Master_Receive(&hi2c1,0x20,&id,1,10) != HAL_OK)
+//  {
+//      printf("i2c r error\n");
+//  }
+//  else
+//      printf("id = %d\n",id);    
 
   /* USER CODE END 2 */
 
@@ -111,6 +258,8 @@ int main(void)
   {
   /* USER CODE END WHILE */
 
+  /* USER CODE BEGIN 3 */
+    HandleCmd();
   /* USER CODE BEGIN 3 */
 
   }

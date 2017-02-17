@@ -49,3 +49,4 @@ cbt6\main.o: ..\Bsp\angle_and_speed\angle_and_speed.h
 cbt6\main.o: ..\Bsp\ccd\epc.h
 cbt6\main.o: ..\protocol\transmit.h
 cbt6\main.o: ..\algorithm\algorithm.h
+cbt6\main.o: ..\Source\gpio_user.h

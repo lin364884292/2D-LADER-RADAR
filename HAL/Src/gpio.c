@@ -63,17 +63,17 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, ANA_TEXT_2_Pin|ANA_TEST_1_Pin|PWR_DOWN_Pin|TEST_MODE_Pin 
-                          |LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, ANA_TEXT_2_Pin|ANA_TEST_1_Pin|GPIO_PIN_7|PWR_DOWN_Pin 
+                          |TEST_MODE_Pin|LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, BOOT1_Pin|CLR_PIX_Pin|CLR_DATA_Pin|RD_DIR_Pin 
                           |ROI_SEL_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PAPin PAPin PAPin PAPin 
-                           PAPin */
-  GPIO_InitStruct.Pin = ANA_TEXT_2_Pin|ANA_TEST_1_Pin|PWR_DOWN_Pin|TEST_MODE_Pin 
-                          |LED_Pin;
+  /*Configure GPIO pins : PAPin PAPin PA7 PAPin 
+                           PAPin PAPin */
+  GPIO_InitStruct.Pin = ANA_TEXT_2_Pin|ANA_TEST_1_Pin|GPIO_PIN_7|PWR_DOWN_Pin 
+                          |TEST_MODE_Pin|LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
