@@ -1,6 +1,6 @@
 /**
  * @file        pro.h
- * @author      陈维
+ * @author      linjiawei
  * @version     V01
  * @date        2016.09.21
  * @brief       协议定义

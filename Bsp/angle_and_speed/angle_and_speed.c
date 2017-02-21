@@ -40,7 +40,7 @@ void InitSpeedCapture(void)
 
 
 /**
-  * @brief  定时器3中断服务程序
+  * @brief  定时器15中断服务程序
   * @param  None
   * @retval None
   */

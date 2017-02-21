@@ -1,6 +1,6 @@
 /**
   * @file        sysconfig.h
-  * @author      陈维
+  * @author      linjiawei
   * @version     V01
   * @date        2016.09.21
   * @brief       
@@ -70,6 +70,21 @@ typedef enum
     FALSE,
     TRUE,
 }BOOL;
+
+////用来在flash中生成一个key
+//const uint32_t __attribute__((at(CONFIG_BASE_ADDRESS + 12))) KeyStore = 0x5A2F5D81;
+//uint16_t CCD_DataBuffer[PIXEL_1_FPS];  
+//ConfigTypeDef SystemConfig = {0,144,1800,0x5A2F5D81,0};
+//uint32_t RecCounter = 0;
+////像素偏移量
+//float PixOffset = -51;
+
+////接收的package
+//PackageDataStruct RecPackage = {PACK_NULL,NULL,0,NULL,NULL};
+
+////待发送距离数据缓存
+//ComBufferTypeDef ComBuffer;
+//LidarDataTypeDef LidarData;
 
 //void WriteConfig(void);
 //void ReadConfig(void);

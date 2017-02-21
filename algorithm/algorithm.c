@@ -1,3 +1,4 @@
+
 #include "algorithm.h"
 #include "stdio.h"
 
@@ -35,6 +36,15 @@ CentroidResultType GetCentroid(u16 *data, float *valid_index)
     
     //type = GetCurveType(data, &head, &tail, &mid);
 
+
+//    //如果最大值太小，判为没有有效光斑
+//    if (PixMax.PixV<PixVavg + 10)
+//    {
+//        *valid_index = 0;
+//        return Centroid_FAILED;
+//    }
+
+    //if ((type == ST_LINE) || (type == W_LINE)) //曲线类型为直线或者W型线，可直接使用平均值加调整量做参考线
     {
         //曲线很平直，排除多峰现象,最大值所在连通域基本就是光斑位置
         ref_line = PixVavg + REF_LINE_ADJUST;
@@ -44,13 +54,104 @@ CentroidResultType GetCentroid(u16 *data, float *valid_index)
             {
                 if (data[i + 1] > ref_line)
                 {
+//                    con_tail = 65535;
+//                    if (con_head == 65535)//找到连通域起始位置
+//                    {
+//                        con_head = i;
+//                    }
                     translation_temp = data[i] - ref_line;
                     sum += translation_temp;
                     weight_sum += i*translation_temp;
                 }
             }
+//            else
+//            {
+//                if (con_tail == 65535)
+//                {
+//                    con_tail = i;
+//                }
+//            }
         }
+//        con_width = con_tail - con_head;
+//        if (con_width > ConDomMax.tail - ConDomMax.head)
+//            sum = 0;
     }
+
+
+//    //斜线时，不适用均值作为参考线，最大值所在连通域可能包含大量干扰		
+//    if (type == OB_LINE) //曲线类型为斜线的处理方法
+//    {
+//        //首先排除掉最大值接近两端的情况,或者最大值比两端只大一点点的情况。
+//        //此种波形没有有效光斑
+//        if ((PixMax.PixI<VALID_PIX_START + 30) || (PixMax.PixI>VALID_PIX_END - 30) || (PixMax.PixV - head.PixV < 10) || (PixMax.PixV - tail.PixV < 10))
+//        {
+//            sum = 0;
+//        }
+//        else
+//        {
+//            ref_line = (head.PixV > tail.PixV) ? head.PixV : tail.PixV;
+//            ref_line += REF_LINE_ADJUST;
+
+//            for (i = VALID_PIX_START; i < VALID_PIX_END; i++) //对整个曲线使用灰度质心法,再计算质心宽度是否会大于连通域宽度				
+//            {
+//                if (data[i] > ref_line)
+//                {
+//                    if (data[i + 1] > ref_line)
+//                    {
+//                        con_tail = 65535;
+//                        if (con_head == 65535)//找到连通域起始位置
+//                        {
+//                            con_head = i;
+//                        }
+//                        translation_temp = data[i] - ref_line;
+//                        sum += translation_temp;
+//                        weight_sum += i*translation_temp;
+//                    }
+//                }
+//                else
+//                {
+//                    if (con_tail == 65535)
+//                    {
+//                        con_tail = i;
+//                    }
+//                }
+//            }
+//            con_width = con_tail - con_head;
+//            if (con_width > ConDomMax.tail - ConDomMax.head)
+//                sum = 0;
+
+//        }
+//    }
+
+//    if (type == M_LINE)
+//    {
+//        ref_line = (head.PixV > tail.PixV) ? head.PixV : tail.PixV;
+//        ref_line += REF_LINE_ADJUST;
+
+//        for (i = VALID_PIX_START; i < VALID_PIX_END; i++) //对整个曲线使用灰度质心法,再计算质心宽度是否会大于连通域宽度						
+//        {
+//            if (data[i] > ref_line)
+//            {
+//                if (data[i + 1] > ref_line)
+//                {
+//                    con_tail = 65535;
+//                    if (con_head == 65535)//找到连通域起始位置
+//                    {
+//                        con_head = i;
+//                    }
+//                    translation_temp = data[i] - ref_line;
+//                    sum += translation_temp;
+//                    weight_sum += i*translation_temp;
+//                    con_width++;
+//                }
+//            }
+//        }
+
+//        con_width = con_tail - con_head;
+//        if (con_width > ConDomMax.tail - ConDomMax.head)
+//            sum = 0;
+//    }
+
 
     if (sum == 0)
         *valid_index = 0xffff;
@@ -59,6 +160,47 @@ CentroidResultType GetCentroid(u16 *data, float *valid_index)
 
     return Centroid_SUCCEED;
 }
+
+//#pragma pop
+
+
+///**
+//  * @brief  根据质心位置查表，并估算当前距离
+//  * @param  index: 质心位置
+//  * @param	distance: 返回距离值
+//  * @retval None
+//  */
+//void GetDistance(float index, float *distance)
+//{
+//    u16 i = 0;
+
+//    float tmp = 0;
+
+//    if ((index <= (float)2540.34) && (index >= (float)314.88))
+//    {
+//        while (index < LiDAR_Ranging_Table[i].pixel_index)
+//        {
+//            i++;
+//        }
+//    }
+
+//    if (i > 0)
+//    {
+
+//        tmp = (float)(index - LiDAR_Ranging_Table[i].pixel_index) \
+//            / (float)(LiDAR_Ranging_Table[i - 1].pixel_index - LiDAR_Ranging_Table[i].pixel_index);
+//        *distance = (float)LiDAR_Ranging_Table[i].distance  \
+//            - (float)(LiDAR_Ranging_Table[i].distance - LiDAR_Ranging_Table[i - 1].distance)*tmp;
+
+
+//    }
+
+//    else
+//    {
+//        *distance = 0;
+
+//    }
+//}
 
 
 /**
@@ -262,3 +404,4 @@ PixCurveType GetCurveType(u16 *data, PixCurveCoor *head, PixCurveCoor *tail, Pix
 
  return ST_LINE;
 }
+/************************ (C) COPYRIGHT INMOTION ROBOT *****END OF FILE****/
