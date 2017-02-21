@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="project_projx.xsd">
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="project_proj.xsd">
 
-  <SchemaVersion>2.1</SchemaVersion>
+  <SchemaVersion>1.1</SchemaVersion>
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
   <Targets>
-    <Target>
+  <Target> 
       <TargetName>CBT6</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
@@ -14,8 +14,6 @@
         <TargetCommonOption>
           <Device>STM32F302CB</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F3xx_DFP.1.3.0</PackID>
-          <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x20007FFF) IROM(0x8000000-0x801FFFF) CLOCK(8000000) FPU2 CPUTYPE("Cortex-M4")</Cpu>
           <FlashUtilSpec />
           <StartupFile />
@@ -31,7 +29,7 @@
           <SLE66CMisc />
           <SLE66AMisc />
           <SLE66LinkerMisc />
-          <SFDFile>$$Device:STM32F302CB$SVD\STM32F30x.svd</SFDFile>
+          <SFDFile />
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath />
@@ -53,7 +51,7 @@
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath />
+          <ListingPath>./CBT6/</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -64,8 +62,6 @@
             <UserProg2Name />
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopU1X>0</nStopU1X>
-            <nStopU2X>0</nStopU2X>
           </BeforeCompile>
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
@@ -102,7 +98,7 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument />
           <IncludeLibraryModules />
-          <ComprImg>0</ComprImg>
+          <ComprImg />
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
@@ -141,13 +137,13 @@
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
-            <RestoreFunctions>1</RestoreFunctions>
+            <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
-            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints> 
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>11</TargetSelection>
+          <TargetSelection>13</TargetSelection>
           <SimDlls>
             <CpuDll />
             <CpuDllArguments />
@@ -279,13 +275,13 @@
               </Ocm6>
               <IRAM>
                 <Type>0</Type>
-                <StartAddress>0x20000000</StartAddress>
-                <Size>0x8000</Size>
+                <StartAddress />
+                <Size />
               </IRAM>
               <IROM>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x20000</Size>
+                <StartAddress />
+                <Size />
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -309,8 +305,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x20000</Size>
+                <StartAddress />
+                <Size />
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -334,8 +330,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20000000</StartAddress>
-                <Size>0x8000</Size>
+                <StartAddress />
+                <Size />
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -365,7 +361,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F302xC</Define>
               <Undefine />
-              <IncludePath>../Inc;          ../Drivers/STM32F3xx_HAL_Driver/Inc;          ../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy;          ../Drivers/CMSIS/Device/ST/STM32F3xx/Include;          ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../../../../../../../../Inc; ../Drivers/STM32F3xx_HAL_Driver/Inc; ../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F3xx/Include; ../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -376,8 +372,6 @@
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
-            <uSurpInc>0</uSurpInc>
-            <useXO>0</useXO>
             <VariousControls>
               <MiscControls />
               <Define />
@@ -403,180 +397,185 @@
             <DisabledWarnings />
           </LDads>
         </TargetArmAds>
-      </TargetOption>
+      </TargetOption>     
       <Groups>
-        <Group>
+        
+		<Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
-        <Group>
+ <Group>
           <GroupName>Drivers/CMSIS</GroupName>
+          
           <Files>
-            <File>
+          
+          <File>
               <FileName>system_stm32f3xx.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Src/system_stm32f3xx.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
+              <FilePath>../../../../../../../../Src/system_stm32f3xx.c</FilePath>
+              
+            </File></Files>
+        </Group><Group>
           <GroupName>Application/MDK-ARM</GroupName>
+          
           <Files>
-            <File>
+          
+          <File>
               <FileName>startup_stm32f302xc.s</FileName>
               <FileType>2</FileType>
               <FilePath>startup_stm32f302xc.s</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
+              
+            </File></Files>
+        </Group><Group>
           <GroupName>Application/User</GroupName>
+          
           <Files>
-            <File>
-              <FileName>adc.c</FileName>
+          
+          <File>
+              <FileName>stm32f3xx_hal_msp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Src/adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/usart.c</FilePath>
-            </File>
-            <File>
+              <FilePath>../../../../../../../../Src/stm32f3xx_hal_msp.c</FilePath>
+              
+            </File><File>
               <FileName>tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f3xx_hal_msp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/stm32f3xx_hal_msp.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/dma.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f3xx_it.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../../Src/usart.c</FilePath>
+              
+            </File><File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../../../Src/adc.c</FilePath>
+              
+            </File><File>
               <FileName>i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Src/i2c.c</FilePath>
-            </File>
-            <File>
+              <FilePath>../../../../../../../../Src/i2c.c</FilePath>
+              
+            </File><File>
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/gpio.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
+              
+            </File></Files>
+        </Group><Group>
           <GroupName>Drivers/STM32F3xx_HAL_Driver</GroupName>
+          
           <Files>
-            <File>
+          
+          <File>
               <FileName>stm32f3xx_hal_uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_cortex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_cortex.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_adc_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_adc_ex.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_gpio.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_rcc_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc_ex.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_flash_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_flash_ex.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_pwr_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_pwr_ex.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_rcc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_dma.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_flash.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_adc.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_pwr.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_pwr.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_uart_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart_ex.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_tim_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim_ex.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_i2c.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_i2c.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal.c</FilePath>
-            </File>
-            <File>
+              
+            </File><File>
               <FileName>stm32f3xx_hal_i2c_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_i2c_ex.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-      </Groups>
+              
+            </File></Files>
+        </Group></Groups>
+    	
     </Target>
   </Targets>
-
   <RTE>
     <apis />
     <components>
@@ -589,5 +588,4 @@
     </components>
     <files />
   </RTE>
-
 </Project>

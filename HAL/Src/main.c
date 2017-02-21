@@ -121,8 +121,8 @@ static void SendMaxPixel(void)
 }
 
 /**
-  * @brief  整合Lidar的2D数据
-  * @param  angle: Lidar当前的角度
+  * @brief  整合Lidar�?2D数据
+  * @param  angle: Lidar当前的角�?
   * @retval None
   */
 static void Intergrate2DData(u16 angle)
@@ -131,30 +131,30 @@ static void Intergrate2DData(u16 angle)
     float pix_index = 0;
     u16 confidence;
 	
-    //灰度质心法求得像素质心位置
+    //灰度质心法求得像素质心位�?
     GetCentroid(Buffer, &pix_index);
 
-    //调整像素偏移量(校准得来)
+    //调整像素偏移�?(校准得来)
     pix_index += PixOffset;
 		
 	//温度补偿
 	//pix_index += TemperatureCompensation();
 	
-    //估算出距离
+    //估算出距�?
     GetDistance(pix_index, &distance);
 
-    //大于最大距离的置零
+    //大于�?大距离的置零
 //    if ((u16)distance > MAX_DISTANCE)
 //        distance = 0;
 
     //将距离数据存入测距数组，同时旋转角度，使零度对齐机器人正前方
-    //旋转角度的原因是，光电对管和镜头方向有角度偏差
+    //旋转角度的原因是，光电对管和镜头方向有角度偏�?
     angle = (angle + SystemConfig.AngleOffset) % 360;
 	
     confidence = GetPixVmax().PixV;
     LidarData.PointData[angle].Distance = distance; //(u16)(angle*10);
 	
-    //处理置信度数据(置信度为像素峰值,大于255的部分，按255处理)
+    //处理置信度数�?(置信度为像素峰�??,大于255的部分，�?255处理)
     
     confidence = confidence>>8; 
     if (confidence > 255)
@@ -220,7 +220,7 @@ int main(void)
     Error_Handler();
   }
 
-  //启动各部分引脚功能
+  //启动各部分引脚功�?
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
     InitSpeedCapture(); 
     HAL_GPIO_WritePin(PWR_DOWN_GPIO_Port,PWR_DOWN_Pin,GPIO_PIN_SET);
@@ -234,7 +234,7 @@ int main(void)
     ClearData();
     StartCCDCapture();
     PackageAndSendTxData();
-  //通过I2C配置epc的
+  //通过I2C配置epc�?
 //  
 //  if(HAL_I2C_Master_Transmit(&hi2c1,0x20,&id,1,1000) != HAL_OK)
 //  {
@@ -259,7 +259,12 @@ int main(void)
       LedToggle();
       if(1)
     {
-        memcpy(Buffer,CCD_DataBuffer,sizeof(CCD_DataBuffer));    
+        memcpy(Buffer,CCD_DataBuffer
+        
+        
+        
+        
+        ,sizeof(CCD_DataBuffer));    
         DataReady = 0;
         if(IsZeroPoint() == TRUE)
         {
@@ -268,16 +273,16 @@ int main(void)
         }
         current_angle = GetLidarAngle() % 360;
 
-        //整合Lidar的2D数据
-        //低转速时可能会出现同一个角度多次处理，过滤掉这一操作，提高测距效率
-//        if ((current_angle != LastAngle))
+        //整合Lidar�?2D数据
+        //低转速时可能会出现同�?个角度多次处理，过滤掉这�?操作，提高测距效�?
+        if ((current_angle != LastAngle))
         {
             Intergrate2DData(current_angle);
             //记录当前位置
             LastAngle = current_angle;
         }
     }
-//    if (IsAllPulseWidthDataReady() == TRUE)
+    if (IsAllPulseWidthDataReady() == TRUE)
     {
 
         SetPulseWidthThreshold();
