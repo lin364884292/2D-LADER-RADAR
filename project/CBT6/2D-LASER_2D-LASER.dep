@@ -223,7 +223,7 @@ I (..\HAL\Inc\i2c.h)(0x58AC2ED5)
 I (..\HAL\Inc\tim.h)(0x58AC2ED8)
 I (..\HAL\Inc\usart.h)(0x58AC2ED9)
 I (..\HAL\Inc\gpio.h)(0x58AC2ECF)
-I (..\Source\usart_user.h)(0x58A54C80)
+I (..\Source\usart_user.h)(0x58AD59D7)
 I (..\Source\stm32_lib.h)(0x58A184D9)
 I (E:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\USER\sysconfig.h)(0x58A6B71A)
@@ -303,7 +303,7 @@ I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_tim_ex.h)(0x585268CE)
 I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart.h)(0x585268CE)
 I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart_ex.h)(0x585268CE)
 I (..\HAL\Inc\stm32f3xx_it.h)(0x58AC2ED9)
-I (..\Source\usart_user.h)(0x58A54C80)
+I (..\Source\usart_user.h)(0x58AD59D7)
 I (..\Source\stm32_lib.h)(0x58A184D9)
 I (E:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\HAL\Inc\usart.h)(0x58AC2ED9)
@@ -347,7 +347,7 @@ I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_tim_ex.h)(0x585268CE)
 I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart.h)(0x585268CE)
 I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart_ex.h)(0x585268CE)
 I (..\HAL\Inc\gpio.h)(0x58AC2ECF)
-F (..\HAL\Src\usart.c)(0x58AC2ED9)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\HAL\Inc -I..\HAL\Drivers\CMSIS\Include -I..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy -I..\Source -I..\protocol -I..\USER -I..\Bsp\angle_and_speed -I..\Bsp\ccd -I..\algorithm --C99-I C:\Users\lin\Desktop\自己写的驱动\CBT6\project\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\1.3.0\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F302xC -DUSE_HAL_DRIVER -DSTM32F302xC-o cbt6\usart.o --omf_browse cbt6\usart.crf --depend cbt6\usart.d)
+F (..\HAL\Src\usart.c)(0x58AD5B22)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\HAL\Inc -I..\HAL\Drivers\CMSIS\Include -I..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy -I..\Source -I..\protocol -I..\USER -I..\Bsp\angle_and_speed -I..\Bsp\ccd -I..\algorithm --C99-I C:\Users\lin\Desktop\自己写的驱动\CBT6\project\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\1.3.0\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F302xC -DUSE_HAL_DRIVER -DSTM32F302xC-o cbt6\usart.o --omf_browse cbt6\usart.crf --depend cbt6\usart.d)
 I (..\HAL\Inc\usart.h)(0x58AC2ED9)
 I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal.h)(0x585268CE)
 I (..\HAL\Inc\stm32f3xx_hal_conf.h)(0x58AC2EDA)
@@ -1173,8 +1173,8 @@ I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart.h)(0x585268CE)
 I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart_ex.h)(0x585268CE)
 I (E:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\Source\sys.h)(0x586B0F08)
-F (..\Source\usart_user.c)(0x58A54C80)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\HAL\Inc -I..\HAL\Drivers\CMSIS\Include -I..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy -I..\Source -I..\protocol -I..\USER -I..\Bsp\angle_and_speed -I..\Bsp\ccd -I..\algorithm --C99-I C:\Users\lin\Desktop\自己写的驱动\CBT6\project\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\1.3.0\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F302xC -DUSE_HAL_DRIVER -DSTM32F302xC-o cbt6\usart_user.o --omf_browse cbt6\usart_user.crf --depend cbt6\usart_user.d)
-I (..\Source\usart_user.h)(0x58A54C80)
+F (..\Source\usart_user.c)(0x58AD59DC)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\HAL\Inc -I..\HAL\Drivers\CMSIS\Include -I..\HAL\Drivers\CMSIS\Device\ST\STM32F3xx\Include -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc -I..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\Legacy -I..\Source -I..\protocol -I..\USER -I..\Bsp\angle_and_speed -I..\Bsp\ccd -I..\algorithm --C99-I C:\Users\lin\Desktop\自己写的驱动\CBT6\project\RTE-I E:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I E:\Keil_v5\ARM\PACK\Keil\STM32F3xx_DFP\1.3.0\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F302xC -DUSE_HAL_DRIVER -DSTM32F302xC-o cbt6\usart_user.o --omf_browse cbt6\usart_user.crf --depend cbt6\usart_user.d)
+I (..\Source\usart_user.h)(0x58AD59D7)
 I (..\Source\stm32_lib.h)(0x58A184D9)
 I (..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal.h)(0x585268CE)
 I (..\HAL\Inc\stm32f3xx_hal_conf.h)(0x58AC2EDA)
