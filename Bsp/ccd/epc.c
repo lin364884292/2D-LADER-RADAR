@@ -1,13 +1,4 @@
-/**
-  * @file        epc.c
-  * @author      林佳伟
-  * @version     V01
-  * @date        2017.01.11
-  * @brief       epc芯片驱动
-  * @note
-  *
-  * @attention   COYPRIGHT INMOTION ROBOT
-  */
+
 #include "epc.h"
 #include "adc.h"
 #include "sysconfig.h"

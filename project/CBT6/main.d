@@ -45,8 +45,7 @@ cbt6\main.o: ..\Source\stm32_lib.h
 cbt6\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 cbt6\main.o: ..\USER\sysconfig.h
 cbt6\main.o: ..\protocol\pro.h
+cbt6\main.o: ..\protocol\transmit.h
 cbt6\main.o: ..\Bsp\angle_and_speed\angle_and_speed.h
 cbt6\main.o: ..\Bsp\ccd\epc.h
-cbt6\main.o: ..\protocol\transmit.h
 cbt6\main.o: ..\algorithm\algorithm.h
-cbt6\main.o: ..\Source\gpio_user.h

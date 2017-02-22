@@ -43,15 +43,10 @@
 /* USER CODE BEGIN Includes */
 #include "usart_user.h"
 #include "sysconfig.h"
+#include "transmit.h"
 #include "angle_and_speed.h"
 #include "epc.h"
-#include "transmit.h"  
-#include "stdint.h"  
 #include "algorithm.h"
-#include "gpio_user.h"
-
-uint16_t LastAngle = 0;
-static uint16_t Buffer[PIXEL_1_FPS];
 
 /* USER CODE END Includes */
 
@@ -68,12 +63,13 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+uint16_t LastAngle = 0;
+static uint16_t Buffer[PIXEL_1_FPS];
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
 /**
-  * @brief  将Lidar 2D数据按鿚讯协议打�?
+  * @brief  将Lidar 2D数据按鿚讯协议打包
   * @param  None
   * @retval None
   */
@@ -100,6 +96,8 @@ static void PackageAndSendTxData(void)
 
 }
 
+
+
 static void SendMaxPixel(void)
 {
 	u32 out_len = 0;
@@ -120,9 +118,10 @@ static void SendMaxPixel(void)
     HAL_UART_Transmit(&huart1,ComBuffer.TxBuffer,out_len,10);    
 }
 
+
 /**
-  * @brief  整合Lidar�?2D数据
-  * @param  angle: Lidar当前的角�?
+  * @brief  整合Lidar的2D数据
+  * @param  angle: Lidar当前的角度
   * @retval None
   */
 static void Intergrate2DData(u16 angle)
@@ -131,30 +130,30 @@ static void Intergrate2DData(u16 angle)
     float pix_index = 0;
     u16 confidence;
 	
-    //灰度质心法求得像素质心位�?
+    //灰度质心法求得像素质心位置
     GetCentroid(Buffer, &pix_index);
 
-    //调整像素偏移�?(校准得来)
+    //调整像素偏移量(校准得来)
     pix_index += PixOffset;
 		
 	//温度补偿
 	//pix_index += TemperatureCompensation();
 	
-    //估算出距�?
+    //估算出距离
     GetDistance(pix_index, &distance);
 
-    //大于�?大距离的置零
+    //大于最大距离的置零
 //    if ((u16)distance > MAX_DISTANCE)
 //        distance = 0;
 
     //将距离数据存入测距数组，同时旋转角度，使零度对齐机器人正前方
-    //旋转角度的原因是，光电对管和镜头方向有角度偏�?
+    //旋转角度的原因是，光电对管和镜头方向有角度偏差
     angle = (angle + SystemConfig.AngleOffset) % 360;
 	
     confidence = GetPixVmax().PixV;
     LidarData.PointData[angle].Distance = distance; //(u16)(angle*10);
 	
-    //处理置信度数�?(置信度为像素峰�??,大于255的部分，�?255处理)
+    //处理置信度数据(置信度为像素峰值,大于255的部分，按255处理)
     
     confidence = confidence>>8; 
     if (confidence > 255)
@@ -173,7 +172,6 @@ static void ResetLidarData(void)
 		LidarData.PointData[i].Distance=0;
     }
 }
-
 /* USER CODE END 0 */
 
 int main(void)
@@ -181,8 +179,7 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
    uint8_t id = 0x00;
-   uint16_t current_angle = 0;
-    
+    uint16_t current_angle=0;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -196,46 +193,48 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_ADC1_Init();
   MX_I2C1_Init();
   MX_USART1_UART_Init();
   MX_TIM15_Init();
   MX_TIM3_Init();
-  MX_TIM4_Init();
-  MX_TIM1_Init();
   MX_TIM2_Init();
+  MX_ADC1_Init();
   MX_TIM6_Init();
+  MX_TIM1_Init();
   MX_TIM16_Init();
+  MX_TIM4_Init();
 
   /* USER CODE BEGIN 2 */
-    UART_SetDMA();   
-    InitSystemConfig();  
-    
+    UART_SetDMA();
+    InitSystemConfig();
+
     //HAL_TIM_Base_Start_IT(&htim2);
-   /* Run the ADC calibration in differential mode */      
-//    HAL_ADC_Stop(&hadc1);  
+   /* Run the ADC calibration in differential mode */  
   if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_DIFFERENTIAL_ENDED) != HAL_OK)
   {
     /* Start Conversation Error */
     Error_Handler();
   }
 
-  //启动各部分引脚功�?
-    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
-    InitSpeedCapture(); 
-    HAL_GPIO_WritePin(PWR_DOWN_GPIO_Port,PWR_DOWN_Pin,GPIO_PIN_SET);
+//  /* Start ADC conversion on regular group with interruption */
+//  if (HAL_ADC_Start_DMA(&hadc1,CCD_DataBuffer,1) != HAL_OK)
+//  {
+//    /* Start Conversation Error */
+//    Error_Handler();
+//  }
+  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
+  InitSpeedCapture();
+    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,GPIO_PIN_SET);
     HAL_Delay(1);
-    HAL_GPIO_WritePin(PWR_DOWN_GPIO_Port,PWR_DOWN_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(TEST_MODE_GPIO_Port,TEST_MODE_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(RD_DIR_GPIO_Port,RD_DIR_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(ROI_SEL_GPIO_Port,ROI_SEL_Pin,GPIO_PIN_RESET);  
-    
+    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);  
+
     ClearPix();
     ClearData();
     StartCCDCapture();
     PackageAndSendTxData();
-  //通过I2C配置epc�?
-//  
 //  if(HAL_I2C_Master_Transmit(&hi2c1,0x20,&id,1,1000) != HAL_OK)
 //  {
 //      printf("i2c t error\n");
@@ -248,23 +247,17 @@ int main(void)
 //      printf("i2c r error\n");
 //  }
 //  else
-//      printf("id = %d\n",id);    
-
+//      printf("id = %d\n",id);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      LedToggle();
-      if(1)
+    
+    if(DataReady)
     {
-        memcpy(Buffer,CCD_DataBuffer
-        
-        
-        
-        
-        ,sizeof(CCD_DataBuffer));    
+        memcpy(Buffer,CCD_DataBuffer,sizeof(CCD_DataBuffer));    
         DataReady = 0;
         if(IsZeroPoint() == TRUE)
         {
@@ -273,9 +266,9 @@ int main(void)
         }
         current_angle = GetLidarAngle() % 360;
 
-        //整合Lidar�?2D数据
-        //低转速时可能会出现同�?个角度多次处理，过滤掉这�?操作，提高测距效�?
-        if ((current_angle != LastAngle))
+        //整合Lidar的2D数据
+        //低转速时可能会出现同一个角度多次处理，过滤掉这一操作，提高测距效率
+//        if ((current_angle != LastAngle))
         {
             Intergrate2DData(current_angle);
             //记录当前位置
@@ -287,13 +280,11 @@ int main(void)
 
         SetPulseWidthThreshold();
     }   
+      
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-   
     HandleCmd();
-  /* USER CODE BEGIN 3 */
-
   }
   /* USER CODE END 3 */
 
@@ -310,11 +301,10 @@ void SystemClock_Config(void)
 
     /**Initializes the CPU, AHB and APB busses clocks 
     */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
@@ -340,7 +330,7 @@ void SystemClock_Config(void)
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_I2C1
                               |RCC_PERIPHCLK_TIM1;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
-  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_SYSCLK;
   PeriphClkInit.Tim1ClockSelection = RCC_TIM1CLK_HCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -361,6 +351,15 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+
+
+int fputc(int ch, FILE *file)
+{
+  uint8_t pData = (uint8_t)ch;
+
+  HAL_UART_Transmit(&huart1, &pData, 1, 10);
+  return ch;
+}
 /* USER CODE END 4 */
 
 /**
