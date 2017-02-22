@@ -36,7 +36,10 @@
 #include "stm32f3xx_it.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "usart_user.h"
+#include "rec.h"
+#include "sysconfig.h"
+#include "usart.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -198,7 +201,6 @@ void SysTick_Handler(void)
 void DMA1_Channel1_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
-
   /* USER CODE END DMA1_Channel1_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_adc1);
   /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
@@ -242,7 +244,7 @@ void TIM1_BRK_TIM15_IRQHandler(void)
   /* USER CODE BEGIN TIM1_BRK_TIM15_IRQn 0 */
 
   /* USER CODE END TIM1_BRK_TIM15_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim1);
+  //HAL_TIM_IRQHandler(&htim1);
   HAL_TIM_IRQHandler(&htim15);
   /* USER CODE BEGIN TIM1_BRK_TIM15_IRQn 1 */
 
@@ -298,11 +300,22 @@ void TIM4_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
+	if(__HAL_UART_GET_IT_SOURCE(&huart1,UART_IT_IDLE))
+	{
+		__HAL_UART_CLEAR_IDLEFLAG(&huart1);	
 
+
+		RecPackage.DataInLen = huart1.RxXferSize - huart1.hdmarx->Instance->CNDTR;
+
+		if(Unpacking(&RecPackage) == PACK_OK)
+		{
+			UART_RestartDMA();
+		}
+	}
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-   
+
   /* USER CODE END USART1_IRQn 1 */
 }
 

@@ -35,3 +35,10 @@ cbt6\stm32f3xx_it.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_tim_e
 cbt6\stm32f3xx_it.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart.h
 cbt6\stm32f3xx_it.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart_ex.h
 cbt6\stm32f3xx_it.o: ..\HAL\Inc\stm32f3xx_it.h
+cbt6\stm32f3xx_it.o: ..\Source\usart_user.h
+cbt6\stm32f3xx_it.o: ..\Source\stm32_lib.h
+cbt6\stm32f3xx_it.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+cbt6\stm32f3xx_it.o: ..\HAL\Inc\usart.h
+cbt6\stm32f3xx_it.o: ..\protocol\rec.h
+cbt6\stm32f3xx_it.o: ..\protocol\pro.h
+cbt6\stm32f3xx_it.o: ..\USER\sysconfig.h
