@@ -56,6 +56,7 @@ __packed typedef struct
 }LidarDataTypeDef;
 
 extern uint16_t CCD_DataBuffer[PIXEL_1_FPS];
+extern uint16_t CCD_DataBuffer_2[PIXEL_1_FPS];
 extern float PixOffset;
 extern uint16_t Temperature;  
 extern ConfigTypeDef SystemConfig;  

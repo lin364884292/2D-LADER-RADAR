@@ -14,11 +14,12 @@
 //用来在flash中生成一个key
 const uint32_t __attribute__((at(CONFIG_BASE_ADDRESS + 12))) KeyStore = 0x5A2F5D81;
 uint16_t CCD_DataBuffer[PIXEL_1_FPS];  
+uint16_t CCD_DataBuffer_2[PIXEL_1_FPS];  
 ConfigTypeDef SystemConfig = {0,144,1800,0x5A2F5D81,0};
 uint32_t RecCounter = 0;
 //像素偏移量
-float PixOffset = -51;
-
+//float PixOffset = -82;
+float PixOffset = 22;
 //接收的package
 PackageDataStruct RecPackage = {PACK_NULL,NULL,0,NULL,NULL};
 

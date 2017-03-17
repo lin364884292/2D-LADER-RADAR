@@ -601,6 +601,21 @@
               <FileType>1</FileType>
               <FilePath>..\Source\usart_user.c</FilePath>
             </File>
+            <File>
+              <FileName>AVG_filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\AVG_filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>FIR_Filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\FIR_Filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>Median_Filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\Median_Filter.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

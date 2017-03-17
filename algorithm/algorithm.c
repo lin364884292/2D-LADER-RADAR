@@ -7,7 +7,44 @@ static PixCurveCoor PixMin = { 0, 0xffff };//最小值坐标
 static ConDom ConDomMax;//最大值所在连通域
 static u32 PixVavg = 0;// 像素值平均值
 
+//partial optimize
+//#pragma push 
+//#pragma O3
+/**
+  * @brief  （中心）质心法求像素曲线的质心位置
+  * @param  data: 指向存储像素的数组
+  * @param	valid_index: 返回灰度质心位置
+  * @retval 获取像素质心位置成功或者失败
+  */
+CentroidResultType Get_Average_Centroid(u16 *data, float *valid_index)
+{
+    int i;
+    int sum=0;
+    int n=0;
+    
+    int ref_line = 2000;//施密特触发阈值
+    int VALID_PIX_START_1 = 5;
+    int VALID_PIX_END_1 = 1027;
+    for (i=0;i<VALID_PIX_START_1;i++)
+    {
+        data[i]=0;
+    }
+    for (i = VALID_PIX_START_1; i < VALID_PIX_END_1; i++) 
+    {
+        if(data[i]>ref_line)
+        {
+            data[i]=1;
+            sum += i;
+            n++;
+        }
+        else
+            data[i]=0;       
+    }
+    *valid_index = (float)sum/n;
+}
 
+ 
+ 
 //partial optimize
 //#pragma push 
 //#pragma O3
@@ -211,16 +248,34 @@ CentroidResultType GetCentroid(u16 *data, float *valid_index)
   */
 void GetDistance(float index, float *distance)
 {
+    if(index > 878.5 && index < 887.5)
+        *distance = 175.26*index - 149670;
+    else if( index > 864.2 && index < 878.5 )
+        *distance = 86.348*index - 71592;
+    else if ( index > 811.7 && index < 864.2 )
+         *distance = 0.4095*index*index - 656.31*index+ 264422;
+    else if (index >787 && index < 811.7)
+        *distance = 0.1498*index*index - 227.08*index + 87101;
+    else if (index >691 && index < 787)
+        *distance = 0.0306*index*index - 40.123*index + 13769;
+    else if (index >496 && index < 691)
+        *distance = 0.005*index*index  - 4.4568*index + 1326.3;
+    else if (index >155 && index < 496)
+        *distance = 0.0008*index*index - 0.0616*index + 191.4;
+    else
+        *distance =  136666.6/(909.4-index); //f =25
+
 //	if (index <(float)909.3)
 //	{
 //       *distance =  136666.6/(909.3-index); //f =25
+//        *distance =  136666.6/(909.4-index); //f =25
 //	}
-	if (index <(float)766.3)
-	{
-		*distance = 87466.6/(766.3-index); // f=16mm
-	}
-	else
-		*distance = 0;
+//	if (index <(float)766.3)
+//	{
+//		*distance = 87466.6/(766.3-index); // f=16mm
+//	}
+//	else
+//		*distance = 0;
 }
 
 

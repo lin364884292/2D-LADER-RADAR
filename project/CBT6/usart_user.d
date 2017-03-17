@@ -41,3 +41,8 @@ cbt6\usart_user.o: ..\HAL\Inc\usart.h
 cbt6\usart_user.o: ..\USER\sysconfig.h
 cbt6\usart_user.o: ..\protocol\pro.h
 cbt6\usart_user.o: ..\protocol\rec.h
+cbt6\usart_user.o: ..\Source\Median_Filter.h
+cbt6\usart_user.o: ..\Source\AVG_filter.h
+cbt6\usart_user.o: ..\Source\kalman_filter.h
+cbt6\usart_user.o: ..\algorithm\algorithm.h
+cbt6\usart_user.o: ..\Source\delay_user.h

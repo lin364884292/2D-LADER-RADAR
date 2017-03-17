@@ -22,33 +22,7 @@
 
 
 /* USER CODE BEGIN 0 */
-/**
-  * @brief  将Lidar 2D数据按鿚讯协议打包
-  * @param  None
-  * @retval None
-  */
-//static void PackageAndSendTxData(void)
-//{   
-//	u32 out_len = 0;
 
-//	PackageDataStruct package;
-
-//    //目标速度
-//    LidarData.GivenSpeed = SystemConfig.GivenSpeed;
-//    //当前速度
-//    LidarData.CurrSpeed = GetAngularSpeed();
-//    
-//	package.DataID = PACK_LIDAR_DATA;
-//	package.DataInBuff = (u8*)&LidarData;
-//	package.DataInLen = sizeof(LidarDataTypeDef);
-//	package.DataOutBuff = ComBuffer.TxBuffer;
-//	package.DataOutLen = &out_len;
-//	
-//    Package(package);
-//    
-//    HAL_UART_Transmit_DMA(&huart1,ComBuffer.TxBuffer,out_len);
-
-//}
 
 /**
   * @brief  数据打包函数

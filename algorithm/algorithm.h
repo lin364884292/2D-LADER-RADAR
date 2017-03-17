@@ -9,7 +9,7 @@
 #define MAX_DISTANCE 8000 //最大有效距离限制
 
 //下面两个参数根据CCD有效像素数量来定
-#define VALID_PIX_START	 3 //有效像素的起始位置
+#define VALID_PIX_START	 5 //有效像素的起始位置
 #define VALID_PIX_END    1027 //有效像素的结束位置
 
 #define REF_LINE_ADJUST 70  //灰度质心法参考线调节值。提高这个值，将减少点的数量。减少这个值，将增加点的跳动。
@@ -68,7 +68,7 @@ typedef struct
 
 
 u8 GetCentroid(u16 *camera_data_array, float *valid_index);
-
+CentroidResultType Get_Average_Centroid(u16 *data, float *valid_index);
 void GetDistance(float index, float *distance);
 void GetPixCurveInfo(u16 *data);
 PixCurveType GetCurveType(u16 *data, PixCurveCoor *head, PixCurveCoor *tail, PixCurveCoor *mid);

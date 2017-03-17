@@ -47,6 +47,19 @@
 #include "angle_and_speed.h"
 #include "epc.h"
 #include "algorithm.h"
+#include "AVG_filter.h"
+#include "Median_Filter.h"
+#include "kalman_filter.h"
+
+s32 AVGFilterArray[2][5];
+
+AvgFilterInt32Def AVGFilter[3] = {
+    {AVGFilterArray[0], 5, 0, 0},
+    {AVGFilterArray[1], 5, 0, 0},
+};
+
+//初始化卡尔曼滤波器
+//kalman1_state kalman1;
 
 /* USER CODE END Includes */
 
@@ -130,8 +143,11 @@ static void Intergrate2DData(u16 angle)
     float pix_index = 0;
     u16 confidence;
 	
+
+    
     //灰度质心法求得像素质心位置
-    GetCentroid(Buffer, &pix_index);
+    Get_Average_Centroid(Buffer, &pix_index);
+//    GetCentroid(Buffer, &pix_index);
 
     //调整像素偏移量(校准得来)
     pix_index += PixOffset;
@@ -150,16 +166,17 @@ static void Intergrate2DData(u16 angle)
     //旋转角度的原因是，光电对管和镜头方向有角度偏差
     angle = (angle + SystemConfig.AngleOffset) % 360;
 	
-    confidence = GetPixVmax().PixV;
-    LidarData.PointData[angle].Distance = distance; //(u16)(angle*10);
-	
+    confidence = GetPixVmax().PixV;  
+    LidarData.PointData[angle].Distance = (distance); //(u16)(angle*10);
+//    LidarData.PointData[angle].Distance = AVG_Filter_s32(&AVGFilter[0],distance);//增加均值滤波器的distance
+
     //处理置信度数据(置信度为像素峰值,大于255的部分，按255处理)
     
     confidence = confidence>>8; 
     if (confidence > 255)
         confidence = 255;
-	
-    LidarData.PointData[angle].Confidence = (u8)confidence;
+	LidarData.PointData[angle].Confidence = (u8)confidence;
+//    LidarData.PointData[angle].Confidence = (u8)AVG_Filter_s32(&AVGFilter[1],(u8)confidence);//增加均值滤波器的confidence
 }
 
 
@@ -180,6 +197,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
    uint8_t id = 0x00;
     uint16_t current_angle=0;
+    int i;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -203,7 +221,10 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM16_Init();
   MX_TIM4_Init();
-
+  
+  //初始化卡尔曼滤波器参数
+//  kalman1_init(&kalman1,0.2,0.01);
+  //
   /* USER CODE BEGIN 2 */
     UART_SetDMA();
     InitSystemConfig();
@@ -222,8 +243,8 @@ int main(void)
 //    /* Start Conversation Error */
 //    Error_Handler();
 //  }
-  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
-  InitSpeedCapture();
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
+    InitSpeedCapture();
     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,GPIO_PIN_SET);
     HAL_Delay(1);
     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,GPIO_PIN_RESET);
@@ -235,6 +256,8 @@ int main(void)
     ClearData();
     StartCCDCapture();
     PackageAndSendTxData();
+  
+  
 //  if(HAL_I2C_Master_Transmit(&hi2c1,0x20,&id,1,1000) != HAL_OK)
 //  {
 //      printf("i2c t error\n");
@@ -252,12 +275,20 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  
+//   for(i=0;i<PIXEL_1_FPS;i++)
+//    {
+//        CCD_DataBuffer_2[i]=i;
+//    }
+    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_15,GPIO_PIN_SET);
   while (1)
-  {
-    
+  {  
     if(DataReady)
     {
+//        Median_Filter_s32(Buffer);
+//        AVG_LINE_Filter_s32(Buffer);
         memcpy(Buffer,CCD_DataBuffer,sizeof(CCD_DataBuffer));    
+
         DataReady = 0;
         if(IsZeroPoint() == TRUE)
         {

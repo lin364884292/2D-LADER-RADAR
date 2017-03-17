@@ -37,3 +37,5 @@ cbt6\usart.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart.h
 cbt6\usart.o: ..\HAL\Drivers\STM32F3xx_HAL_Driver\Inc\stm32f3xx_hal_uart_ex.h
 cbt6\usart.o: ..\HAL\Inc\gpio.h
 cbt6\usart.o: ..\HAL\Inc\dma.h
+cbt6\usart.o: ..\USER\sysconfig.h
+cbt6\usart.o: ..\protocol\pro.h

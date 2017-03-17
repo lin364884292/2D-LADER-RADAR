@@ -54,6 +54,17 @@ void StartCCDCapture(void)
     //HAL_TIM_Base_Start_IT(&htim4);
 }
 
+
+void START_SHUTTER(void)
+{
+    HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_4); // start SHUTTER
+}
+
+void STOP_SHUTTER(void)
+{
+    HAL_TIM_PWM_Stop(&htim2,TIM_CHANNEL_4); // start SHUTTER
+}
+
 void StartRead(void)
 {
     HAL_ADC_Start_DMA(&hadc1,(uint32_t*)CCD_DataBuffer,PIXEL_1_FPS); //start adc dma
@@ -66,6 +77,8 @@ void StartRead(void)
 void ClearData(void)
 {
     HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_SET);
+    
     HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_RESET);   
 }
@@ -123,7 +136,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
         //HAL_DMA_Abort(&hdma_adc1);
        // HAL_GPIO_WritePin(GPIOA,GPIO_PIN_15,GPIO_PIN_SET);
         ClearData();
+        ClearPix();
         DataReady = 1;
+        
+//        START_SHUTTER();
     }
 }
 
@@ -133,7 +149,7 @@ void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
     if(htim == &htim2)
     {
 //       HAL_GPIO_WritePin(GPIOA,GPIO_PIN_15,GPIO_PIN_RESET);
-//       StartRead(); 
+       StartRead(); 
     }
 }
 
@@ -143,6 +159,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     if(GPIO_Pin == GPIO_PIN_13)
     {
        // HAL_GPIO_WritePin(GPIOA,GPIO_PIN_15,GPIO_PIN_RESET);
+//        STOP_SHUTTER();
         StartRead();
     }
 }

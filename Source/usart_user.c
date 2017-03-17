@@ -14,21 +14,115 @@
 #include "stdio.h"
 #include "stm32f3xx_hal_uart.h"
 #include "rec.h"
+#include "Median_Filter.h"
+#include "AVG_filter.h"
+#include "kalman_filter.h"
+#include "algorithm.h"
+#include "delay_user.h"
+
+//static PixCurveCoor MaxPixInfo;
+//static u8 CmdFlag[16];
+
+static float PixIndex = 0;
+static float Distance = 0;
+
+static float distance_avg = 0;
+static float pix_index_avg =0;
+
+static uint16_t Buffer_2[PIXEL_1_FPS];
+//static u8 QuitFlag = 0;
+
+//初始化卡尔曼滤波器
+extern kalman1_state kalman1;
 
 extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 
+static u8 temp[PIXEL_1_FPS+1];
+static uint16_t Buffer_temp[PIXEL_1_FPS];
+
+static float pix;
+void FFT_filter(u16 *data)
+{
+    int i;
+    int sum=0;
+    int n=0;
+    
+    int ref_line = 2000;
+    int VALID_PIX_START_1 = 5;
+    int VALID_PIX_END_1 = 1027;
+    for (i=0;i<VALID_PIX_START_1;i++)
+    {
+        data[i]=0;
+    }
+    for (i = VALID_PIX_START_1; i < VALID_PIX_END_1; i++) 
+    {
+        if(data[i]>ref_line)
+        {
+            data[i]=1;
+            sum += i;
+            n++;
+        }
+        else
+            data[i]=0;       
+    }
+    pix = (float)sum/n;
+}
+
+
+
+/**
+  * @brief  发送debug数据
+  * @param  None
+  * @retval None
+  */
+static void SendData_2(DebugTypeDef id , u8 *data_buffer , u32 len)
+{
+    u32 i = 0;
+    PackageDataStruct package;
+    u32 out_len;
+      
+	temp[0] = (u8)id;	
+    
+    memcpy(temp+1,data_buffer,len);
+    
+    package.DataID = PACK_DEBUG_MODE;
+    package.DataInBuff = temp;
+    package.DataInLen = len+1;
+    package.DataOutBuff = ComBuffer.TxBuffer;
+    package.DataOutLen = &out_len;
+    
+    Package(package);
+    
+    HAL_UART_Transmit(&huart1,ComBuffer.TxBuffer,out_len,10);    
+
+}
+
+
+//uint16_t CCD_DataBuffer_2[PIXEL_1_FPS];  
 static void SendWholePixel(void)
 {
+    int i;
 	u32 out_len = 0;
-
+    u32 len = sizeof(CCD_DataBuffer);
 	PackageDataStruct package;
-    CCD_DataBuffer[2] = DEBUG_GET_WHOLE_PIXEL_VALUE;
+//    CCD_DataBuffer[0] = DEBUG_GET_WHOLE_PIXEL_VALUE;
     
+    memcpy(Buffer_temp,CCD_DataBuffer,sizeof(CCD_DataBuffer));   
+    
+    
+//    Median_Filter_s32(Buffer_temp);
+//    AVG_LINE_Filter_s32(Buffer_temp);
+//    kalman1_line_filter(&kalman1,Buffer_temp);
+//    FFT_filter(Buffer_temp);
+    
+    temp[0] = DEBUG_GET_WHOLE_PIXEL_VALUE;
+    memcpy(temp+1,Buffer_temp,len);
+//     memcpy(temp+1,CCD_DataBuffer,len);
 	package.DataID = PACK_DEBUG_MODE;
-	package.DataInBuff = (u8*)&CCD_DataBuffer[2];
-	package.DataInLen = (PIXEL_1_FPS - 2)*2;
+	package.DataInBuff = temp;
+	package.DataInLen = len+1;
 	package.DataOutBuff = ComBuffer.TxBuffer;
 	package.DataOutLen = &out_len;
 	
@@ -36,7 +130,6 @@ static void SendWholePixel(void)
     
     HAL_UART_Transmit(&huart1,ComBuffer.TxBuffer,out_len,10);    
 }
-
 
 /**
   * @brief  处理串口发过来的数据包
@@ -88,8 +181,28 @@ void HandleCmd(void)
 		
 		case PACK_DEBUG_MODE:
            while(1)
-           {               
-             SendWholePixel();
+           {
+               memcpy(Buffer_2,CCD_DataBuffer,sizeof(CCD_DataBuffer));    
+               //灰度质心法求得像素质心位置
+               
+               GetCentroid(Buffer_2, &PixIndex);
+                Get_Average_Centroid(Buffer_2, &pix_index_avg);
+               
+                //调整像素偏移量(校准得来)
+                pix_index_avg += 22;
+                PixIndex += PixOffset;
+               
+                GetDistance(PixIndex, &Distance);
+               
+                GetDistance(pix_index_avg, &distance_avg);
+//               
+//               SendWholePixel();  
+//              SendData_2(DEBUG_GET_WHOLE_PIXEL_VALUE,(u8*)CCD_DataBuffer,sizeof(CCD_DataBuffer));
+              
+            u16 pix_index = PixIndex *10;
+			SendData_2(DEBUG_GET_WHOLE_PIXEL_VALUE,(u8 *)&pix_index,sizeof(pix_index));
+               
+               
               while(HAL_UART_GetState(&huart1) == HAL_UART_STATE_BUSY);
            }
 		    break;
@@ -119,6 +232,7 @@ void UART_SetDMA(void)
 	}	
 }
 
+
 void UART_RestartDMA(void)
 {
 	__HAL_DMA_DISABLE(&hdma_usart1_rx);
@@ -137,5 +251,3 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	printf("Error:Com1 overflow,please check serial port\n");
 	UART_RestartDMA();
 }
-
-
